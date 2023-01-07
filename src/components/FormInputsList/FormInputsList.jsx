@@ -15,8 +15,8 @@ export default function FormInputsList({ data, formik }) {
   const addElement = (item, setState) => {
     //Add an element to the current state
     setState((current) => [...current, item]);
-    //To prevent duplicated elements as a consequence of double rendering
-    //because of a feature inside ReactStrictMode in React.18
+    //To prevent duplicated elements in develop environment as a consequence of double rendering
+    //because of ReactStrictMode in React.18
     setState((current) =>
       current.filter((item, index) => {
         return current.indexOf(item) === index;
@@ -94,7 +94,14 @@ export default function FormInputsList({ data, formik }) {
 
   const renderDateInputs = () => {
     if (dateInputs.length > 0) {
-      return dateInputs.map((item, index) => <p key={index}>{item.name}</p>);
+      return dateInputs.map((item, index) => (
+        <input
+          key={index}
+          name={item.name}
+          type={item.type}
+          onChange={handleChange}
+        />
+      ));
     }
   };
 

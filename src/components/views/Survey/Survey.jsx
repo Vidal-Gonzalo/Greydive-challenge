@@ -1,26 +1,51 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useFormik } from "formik";
 import * as Yup from "yup";
-import db from "../../../assets/data/db.json";
+import { useNavigate } from "react-router-dom";
+import inputsData from "../../../assets/data/inputsData.json";
 import FormInputsList from "../../FormInputsList/FormInputsList";
 import { formikUtils } from "../../../utils/formikUtils";
+import { swalConfirm } from "../../../utils/swal";
+import { addDoc, collection } from "firebase/firestore";
+import { db } from "../../../firebase/firebase";
 
 export default function Survey() {
-  let dbItems = db.items;
-  let dbItemsWithoutSubmitButton = dbItems.filter(
-    (dbItem) => dbItem.type !== "submit"
-  );
+  const [surveyState, setSurveyState] = useState({
+    loading: false,
+    error: null,
+    data: null,
+  });
+  const navigate = useNavigate();
+  const { items } = inputsData;
+  let dataWithoutSubmitButton = items.filter((item) => item.type !== "submit");
 
-  const onSubmit = (e) => {
-    console.log(values);
+  const onSubmit = async () => {
+    setSurveyState({ loading: true, error: null, data: null });
+    try {
+      let response = await addDoc(collection(db, "surveyResults"), values);
+      setSurveyState({ loading: false, error: null, data: response });
+    } catch (err) {
+      setSurveyState({ loading: false, error: err, data: null });
+    }
   };
 
-  const initialValues = formikUtils.getInitialValues(
-    dbItemsWithoutSubmitButton
-  );
+  useEffect(() => {
+    if (surveyState.data) {
+      let resultsId = surveyState.data.id;
+      swalConfirm(
+        "Código para ver tus resultados:",
+        resultsId,
+        "Ver mis resultados",
+        "Verlos más tarde",
+        navigate
+      );
+    }
+  }, [surveyState, navigate]);
+
+  const initialValues = formikUtils.getInitialValues(dataWithoutSubmitButton);
 
   const SchemaObject = formikUtils.generateDynamicSchema(
-    dbItemsWithoutSubmitButton
+    dataWithoutSubmitButton
   );
 
   const validationSchema = Yup.object().shape(SchemaObject);
@@ -32,8 +57,7 @@ export default function Survey() {
   return (
     <main className="main-section">
       <form className="form-container" onSubmit={handleSubmit}>
-        {/* Hacer un componente */}
-        <FormInputsList data={dbItems} formik={formik} />
+        <FormInputsList data={items} formik={formik} />
       </form>
     </main>
   );
