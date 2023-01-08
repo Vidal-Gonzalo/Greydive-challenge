@@ -1,20 +1,16 @@
 import { TextField } from "@mui/material";
 import React from "react";
-import { formikUtils } from "../../utils/formikUtils";
 
 export default function TextInput({
   item,
   handleChange,
   handleBlur,
-  touched,
-  errors,
-  values,
+  formik,
+  value,
 }) {
   const { type, label, name } = item;
+  const { touched, errors } = formik;
 
-  const value = formikUtils.getInputPropsByName(name, values);
-  const error = formikUtils.getInputPropsByName(name, errors);
-  const touch = formikUtils.getInputPropsByName(name, touched);
   return (
     <>
       <TextField
@@ -22,8 +18,8 @@ export default function TextInput({
         variant="standard"
         onBlur={handleBlur}
         values={value}
-        error={error && touch ? true : false}
-        helperText={error && touch && error}
+        error={errors && touched ? true : false}
+        helperText={errors && touched && errors}
         type={type}
         name={name}
         label={label}

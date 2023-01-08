@@ -5,27 +5,23 @@ import {
   MenuItem,
   Select,
 } from "@mui/material";
-import { formikUtils } from "../../utils/formikUtils";
 import React from "react";
 
 export default function SelectInputs({
   item,
   handleChange,
   handleBlur,
-  touched,
-  errors,
-  values,
+  formik,
+  value,
 }) {
   const { label, name, options } = item;
+  const { touched, errors } = formik;
 
-  const value = formikUtils.getInputPropsByName(name, values);
-  const error = formikUtils.getInputPropsByName(name, errors);
-  const touch = formikUtils.getInputPropsByName(name, touched);
   return (
     <FormControl variant="standard" sx={{ m: 1, minWidth: 120 }}>
       <InputLabel
         id="demo-simple-select-standard-label"
-        style={error && { color: "#D32F2F" }}
+        style={errors && touched && { color: "#D32F2F" }}
       >
         {label}
       </InputLabel>
@@ -33,7 +29,6 @@ export default function SelectInputs({
         onBlur={handleBlur}
         defaultValue=""
         value={value}
-        error={error && touch ? true : false}
         name={name}
         label={label}
         onChange={handleChange}
@@ -44,8 +39,8 @@ export default function SelectInputs({
           </MenuItem>
         ))}
       </Select>
-      {error && touch && (
-        <FormHelperText style={{ color: "#D32F2F" }}>{error}</FormHelperText>
+      {errors && touched && (
+        <FormHelperText style={{ color: "#D32F2F" }}>{errors}</FormHelperText>
       )}
     </FormControl>
   );

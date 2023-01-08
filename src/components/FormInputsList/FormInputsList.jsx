@@ -1,127 +1,71 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import TextInput from "../FormInputs/TextInput";
 import SelectInputs from "../FormInputs/SelectInput";
 import CheckboxInput from "../FormInputs/CheckboxInput";
+import DateInput from "../FormInputs/DateInput";
+import ReactPaginate from "react-paginate";
+import { motion } from "framer-motion";
 
-export default function FormInputsList({ data, formik }) {
-  const [textInputs, setTextInputs] = useState([]);
-  const [selectInputs, setSelectInputs] = useState([]);
-  const [checkboxInputs, setCheckboxInputs] = useState([]);
-  const [dateInputs, setDateInputs] = useState([]);
-  const [buttons, setButtons] = useState([]);
-
-  const { handleChange, handleBlur, touched, values, errors } = formik;
-
-  const addElement = (item, setState) => {
-    //Add an element to the current state
-    setState((current) => [...current, item]);
-    //To prevent duplicated elements in develop environment as a consequence of double rendering
-    //because of ReactStrictMode in React.18
-    setState((current) =>
-      current.filter((item, index) => {
-        return current.indexOf(item) === index;
-      })
-    );
+export default function FormInputsList({
+  data,
+  formik,
+  currentPage,
+  changeCurrentPage,
+}) {
+  //Dictionary to map the input types to their corresponding components
+  const inputComponents = {
+    text: TextInput,
+    email: TextInput,
+    select: SelectInputs,
+    checkbox: CheckboxInput,
+    date: DateInput,
   };
 
-  useEffect(() => {
-    for (const item of data) {
-      if (item.type === "text" || item.type === "email") {
-        addElement(item, setTextInputs);
-      }
-      if (item.type === "select") {
-        addElement(item, setSelectInputs);
-      }
-      if (item.type === "checkbox") {
-        addElement(item, setCheckboxInputs);
-      }
-      if (item.type === "date") {
-        addElement(item, setDateInputs);
-      }
+  //Implement common props to each component
+  const getInputProps = (item, formik) => ({
+    item,
+    formik: {
+      touched: formik.touched[item.name],
+      errors: formik.errors[item.name],
+    },
+    setFieldValue: formik.setFieldValue,
+    handleBlur: formik.handleBlur,
+    handleChange: formik.handleChange,
+    value: formik.values[item.name],
+  });
+
+  const inputsPerPage = 3;
+  const numPages = Math.ceil(data.length / inputsPerPage);
+
+  //Map the dictionary and return the corresponding component. If there isn't any match, return a generic input.
+  const renderInputs = (inputs, currentPage) => {
+    const startIndex = (currentPage - 1) * 3;
+    const endIndex = startIndex + 3;
+
+    return inputs.slice(startIndex, endIndex).map((item, index) => {
+      const InputComponent = inputComponents[item.type] || "input";
       if (item.type === "submit") {
-        addElement(item, setButtons);
+        return (
+          <button type={item.type} key={index}>
+            {item.label}
+          </button>
+        );
       }
-    }
-  }, [data]);
-
-  const renderTextInputs = () => {
-    if (textInputs.length > 0) {
-      return textInputs.map((item, index) => (
-        <TextInput
-          key={index}
-          item={item}
-          handleBlur={handleBlur}
-          handleChange={handleChange}
-          touched={touched}
-          values={values}
-          errors={errors}
-        />
-      ));
-    }
-  };
-
-  const renderSelectInputs = () => {
-    if (selectInputs.length > 0) {
-      return selectInputs.map((item, index) => (
-        <SelectInputs
-          key={index}
-          item={item}
-          handleBlur={handleBlur}
-          handleChange={handleChange}
-          touched={touched}
-          values={values}
-          errors={errors}
-        />
-      ));
-    }
-  };
-
-  const renderCheckboxInputs = () => {
-    if (checkboxInputs.length > 0) {
-      return checkboxInputs.map((item, index) => (
-        <CheckboxInput
-          key={index}
-          item={item}
-          handleBlur={handleBlur}
-          handleChange={handleChange}
-          touched={touched}
-          values={values}
-          errors={errors}
-        />
-      ));
-    }
-  };
-
-  const renderDateInputs = () => {
-    if (dateInputs.length > 0) {
-      return dateInputs.map((item, index) => (
-        <input
-          key={index}
-          name={item.name}
-          type={item.type}
-          onChange={handleChange}
-        />
-      ));
-    }
-  };
-
-  const renderSubmitButton = () => {
-    if (buttons.length > 0) {
-      return buttons.map((button, index) => (
-        <button type={button.type} key={index}>
-          {button.label}
-        </button>
-      ));
-    }
+      return <InputComponent key={index} {...getInputProps(item, formik)} />;
+    });
   };
 
   return (
     <div className="form-input-list">
-      {renderTextInputs()}
-      {renderSelectInputs()}
-      {renderCheckboxInputs()}
-      {renderDateInputs()}
-      {renderSubmitButton()}
+      {data.length > 0 && renderInputs(data, currentPage)}
+      {currentPage > 0 && (
+        <ReactPaginate
+          previousLabel={"Anterior"}
+          nextLabel={"Siguiente"}
+          pageCount={numPages}
+          onPageChange={(page) => changeCurrentPage(page)}
+        />
+      )}
     </div>
   );
 }

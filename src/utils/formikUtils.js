@@ -13,12 +13,12 @@ export const formikUtils = {
         ) {
           //Initialize string values
           return [field.name, ""];
-        } else if (field.type === "checkbox") {
-          return [field.name, []];
-        } else {
-          //If the field is not a string or an array, return empty validation
-          return ["none", ""];
         }
+        if (field.type === "checkbox") {
+          return [field.name, []];
+        }
+        //If the field is not a string, array or an object, return empty validation
+        return ["none", ""];
       })
     );
     return initialValues;
@@ -44,8 +44,7 @@ export const formikUtils = {
         if (
           (field.type === "text" && !field.required) ||
           (field.type === "select" && !field.required) ||
-          (field.type === "date" && !field.required) ||
-          (field.type === "checkbox" && !field.required)
+          (field.type === "date" && !field.required)
         ) {
           return [field.name, Yup.string()];
         }
@@ -73,14 +72,5 @@ export const formikUtils = {
       })
     );
     return dynamicSchema;
-  },
-  getInputPropsByName: (name, prop) => {
-    let propValue;
-    for (const [key, value] of Object.entries(prop)) {
-      if (key === name) {
-        propValue = value;
-      }
-    }
-    return propValue;
   },
 };
