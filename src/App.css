@@ -1,36 +1,9 @@
-body {
-  margin: 0;
-}
-.main-section {
-  height: 100vh;
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-.form-container {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-.form-container > .form-input-list {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  flex-direction: column;
-  height: 20%;
-  width: 80%;
-  padding: 3rem;
-  border-radius: 16px;
-  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
-  backdrop-filter: blur(9.6px);
-  -webkit-backdrop-filter: blur(9.6px);
-  box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+@font-face {
+  font-family: "Gotham";
+  src: local("GothamBook"), url("./assets/fonts/GothamBook/GothamBook.otf");
 }
 
-.swal2-popup {
-  font-family: "Trebuchet MS", "Lucida Sans Unicode", "Lucida Grande",
-    "Lucida Sans", Arial, sans-serif;
+body {
+  margin: 0;
+  font-family: "Gotham";
 }

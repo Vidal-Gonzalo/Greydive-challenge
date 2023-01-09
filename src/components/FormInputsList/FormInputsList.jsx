@@ -4,7 +4,10 @@ import SelectInputs from "../FormInputs/SelectInput";
 import CheckboxInput from "../FormInputs/CheckboxInput";
 import DateInput from "../FormInputs/DateInput";
 import ReactPaginate from "react-paginate";
-import { motion } from "framer-motion";
+import KeyboardArrowLeftIcon from "@mui/icons-material/KeyboardArrowLeft";
+import KeyboardArrowRightIcon from "@mui/icons-material/KeyboardArrowRight";
+import SubmitButton from "../Buttons/SubmitButton";
+import "./FormInputsList.css";
 
 export default function FormInputsList({
   data,
@@ -37,19 +40,16 @@ export default function FormInputsList({
   const inputsPerPage = 3;
   const numPages = Math.ceil(data.length / inputsPerPage);
 
-  //Map the dictionary and return the corresponding component. If there isn't any match, return a generic input.
+  //Input.slice:
+  //Input.map: Map the dictionary and return the corresponding component. If there isn't any match, return a generic input.
   const renderInputs = (inputs, currentPage) => {
-    const startIndex = (currentPage - 1) * 3;
-    const endIndex = startIndex + 3;
+    const startIndex = (currentPage - 1) * inputsPerPage;
+    const endIndex = startIndex + inputsPerPage;
 
     return inputs.slice(startIndex, endIndex).map((item, index) => {
       const InputComponent = inputComponents[item.type] || "input";
       if (item.type === "submit") {
-        return (
-          <button type={item.type} key={index}>
-            {item.label}
-          </button>
-        );
+        return <SubmitButton key={index} item={item} />;
       }
       return <InputComponent key={index} {...getInputProps(item, formik)} />;
     });
@@ -59,12 +59,28 @@ export default function FormInputsList({
     <div className="form-input-list">
       {data.length > 0 && renderInputs(data, currentPage)}
       {currentPage > 0 && (
-        <ReactPaginate
-          previousLabel={"Anterior"}
-          nextLabel={"Siguiente"}
-          pageCount={numPages}
-          onPageChange={(page) => changeCurrentPage(page)}
-        />
+        <div className="pagination-container">
+          <ReactPaginate
+            previousLabel={
+              <div>
+                <KeyboardArrowLeftIcon fontSize="large" />
+              </div>
+            }
+            nextLabel={
+              <div>
+                <KeyboardArrowRightIcon fontSize="large" />
+              </div>
+            }
+            containerClassName={"pagination-btns"}
+            previousLinkClassName={"prev-btn"}
+            nextLinkClassName={"next-btn"}
+            disabledClassName={"pagination-disabled"}
+            activeClassName={"pagination-active"}
+            pageClassName={"pagination-page"}
+            pageCount={numPages}
+            onPageChange={(page) => changeCurrentPage(page)}
+          />
+        </div>
       )}
     </div>
   );

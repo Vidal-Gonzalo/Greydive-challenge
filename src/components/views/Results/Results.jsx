@@ -3,6 +3,9 @@ import React, { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import useFetch from "../../../hooks/useFetch";
 import { swalError } from "../../../utils/swal";
+import { motion } from "framer-motion";
+import ResultCard from "../../ResultCard/ResultCard";
+import "./Results.css";
 
 export default function Results() {
   const { id } = useParams();
@@ -24,9 +27,27 @@ export default function Results() {
     }
   }, [id, loading, error, success, data]);
 
+  const container = {
+    hidden: { opacity: 0 },
+    show: {
+      opacity: 1,
+      transition: {
+        delayChildren: 0.5,
+      },
+    },
+  };
+  const item = {
+    hidden: { opacity: 0 },
+    show: { opacity: 1 },
+  };
+
   if (loading) {
     return (
-      <div
+      <motion.div
+        className="results-section"
+        variants={container}
+        initial="hidden"
+        animate="show"
         style={{
           height: "100vh",
           display: "flex",
@@ -34,8 +55,8 @@ export default function Results() {
           alignItems: "center",
         }}
       >
-        <CircularProgress />
-      </div>
+        <CircularProgress variants={item} />
+      </motion.div>
     );
   }
   if (error) {
@@ -47,11 +68,19 @@ export default function Results() {
   }
   if (results.length > 0) {
     return (
-      <div>
-        {results.map((item, index) => (
-          <p key={index}>{item.content}</p>
-        ))}
-      </div>
+      <section className="results-section">
+        <motion.div
+          className="results-container"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delayChildren: 0.5 }}
+          exit={{ opacity: 0 }}
+        >
+          {results.map((item, index) => (
+            <ResultCard item={item} key={index} />
+          ))}
+        </motion.div>
+      </section>
     );
   }
 }

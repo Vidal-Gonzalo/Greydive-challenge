@@ -1,0 +1,26 @@
+.main-section {
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  background-color: transparent;
+  background-image: repeating-radial-gradient(
+    circle farthest-corner at -1% 0,
+    #d4034f,
+    #90088b 30%,
+    #662d91 53%,
+    #90088b 78%,
+    #b1005e
+  );
+}
+
+.main-section > .motion-form {
+  width: 70%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}

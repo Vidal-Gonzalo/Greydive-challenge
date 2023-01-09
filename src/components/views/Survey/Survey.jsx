@@ -11,6 +11,7 @@ import SurveySent from "../../SurveySent/SurveySent";
 import { CircularProgress } from "@mui/material";
 import { motion, useAnimation } from "framer-motion";
 import { swalError } from "../../../utils/swal";
+import "./Survey.css";
 
 export default function Survey() {
   const [loading, setLoading] = useState(false);
@@ -69,7 +70,31 @@ export default function Survey() {
   if (!data && !loading) {
     return (
       <main className="main-section">
-        <motion.div animate={controls}>
+        <div
+          className="input"
+          style={{
+            marginTop: "8rem",
+            width: "34%",
+            display: "flex",
+            justifyContent: "center",
+          }}
+        >
+          <div
+            className="label"
+            style={{ display: "flex", justifyContent: "center" }}
+          >
+            <motion.p
+              key={currentPage}
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ duration: 1 }}
+              exit={{ opacity: 0 }}
+            >
+              Sección {currentPage}
+            </motion.p>
+          </div>
+        </div>
+        <motion.div className="motion-form" animate={controls}>
           <form className="form-container" onSubmit={handleSubmit}>
             <FormInputsList
               data={items}

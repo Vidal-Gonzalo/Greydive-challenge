@@ -1,0 +1,25 @@
+.results-section {
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  background-color: transparent;
+  background-image: repeating-radial-gradient(
+    circle farthest-corner at -1% 0,
+    #d4034f,
+    #90088b 30%,
+    #662d91 53%,
+    #90088b 78%,
+    #b1005e
+  );
+}
+
+.results-section > .results-container {
+  margin-top: 4rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  width: 100%;
+}

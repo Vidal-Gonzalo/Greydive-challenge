@@ -1,5 +1,7 @@
-import { TextField } from "@mui/material";
 import React from "react";
+import { TextField } from "@mui/material";
+import PriorityHighIcon from "@mui/icons-material/PriorityHigh";
+import { motion, AnimatePresence } from "framer-motion";
 
 export default function TextInput({
   item,
@@ -8,25 +10,56 @@ export default function TextInput({
   formik,
   value,
 }) {
-  const { type, label, name } = item;
+  const { type, label, name, required } = item;
   const { touched, errors } = formik;
 
   return (
-    <>
+    <div className="input">
+      <div className="label">
+        <p>{label}</p>
+        {required && <span>*</span>}
+      </div>
+
       <TextField
         id="outlined-basic"
         variant="standard"
         onBlur={handleBlur}
+        theme="secondary"
         values={value}
-        error={errors && touched ? true : false}
-        helperText={errors && touched && errors}
+        defaultValue={value}
+        helperText={
+          errors && touched ? (
+            <AnimatePresence>
+              <motion.span
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ duration: 1 }}
+                exit={{ opacity: 0, transition: { duration: 1 } }}
+                className="error-message-container"
+              >
+                <span className="error-message">
+                  <PriorityHighIcon
+                    fontSize={"small"}
+                    sx={{ marginRight: "0.3rem" }}
+                  />
+                  {errors}
+                </span>
+              </motion.span>
+            </AnimatePresence>
+          ) : (
+            <span style={{ display: "block", height: "2.5rem" }}></span>
+          )
+        }
         type={type}
         name={name}
-        label={label}
+        sx={{
+          width: "80%",
+          input: { color: "#ccc", fontFamily: "Gotham" },
+        }}
         onChange={handleChange}
-        className="input"
-        placeholder={label}
+        color="secondary"
+        placeholder="Tu respuesta..."
       />
-    </>
+    </div>
   );
 }

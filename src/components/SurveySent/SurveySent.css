@@ -1,0 +1,52 @@
+.survey-sent-container {
+  height: 100vh;
+  font-family: "Gotham";
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  flex-direction: column;
+  background-color: transparent;
+  background-image: repeating-radial-gradient(
+    circle farthest-corner at -1% 0,
+    #d4034f,
+    #90088b 30%,
+    #662d91 53%,
+    #90088b 78%,
+    #b1005e
+  );
+}
+
+.survey-sent-container > .survey-sent {
+  background-color: #282a3a;
+  color: #ccc;
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+  backdrop-filter: blur(9.6px);
+  -webkit-backdrop-filter: blur(9.6px);
+  box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+  border-radius: 16px;
+  height: 20%;
+  padding: 2rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
+.survey-sent-container > .survey-sent > p {
+  margin-bottom: 1.5rem;
+}
+
+.survey-sent-container > .survey-sent > .survey-sent-btn {
+  font-family: "Gotham";
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #d30070;
+  color: #ccc;
+  width: 11rem;
+  height: 2.7rem;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+  transition: all 500ms;
+}

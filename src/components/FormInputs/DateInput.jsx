@@ -3,6 +3,8 @@ import dayjs from "dayjs";
 import { TextField } from "@mui/material";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { DesktopDatePicker, LocalizationProvider } from "@mui/x-date-pickers";
+import PriorityHighIcon from "@mui/icons-material/PriorityHigh";
+import { motion, AnimatePresence } from "framer-motion";
 
 export default function DateInput({
   item,
@@ -11,7 +13,7 @@ export default function DateInput({
   formik,
   value,
 }) {
-  const { label, name } = item;
+  const { label, name, required } = item;
   const { touched, errors } = formik;
 
   const handleDateChange = (newValue) => {
@@ -20,8 +22,12 @@ export default function DateInput({
   };
 
   return (
-    <div className="date-input">
-      <p>{label}</p>
+    <div className="input">
+      <div className="label">
+        <p>{label}</p>
+        {required && <span>*</span>}
+      </div>
+
       <LocalizationProvider dateAdapter={AdapterDayjs}>
         <DesktopDatePicker
           name={name}
@@ -34,9 +40,36 @@ export default function DateInput({
           renderInput={(params) => (
             <TextField
               {...params}
-              helperText={errors && touched && errors}
+              helperText={
+                errors && touched ? (
+                  <AnimatePresence>
+                    <motion.span
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                      exit={{ opacity: 0 }}
+                      className="error-message-container"
+                    >
+                      <span className="error-message">
+                        <PriorityHighIcon
+                          fontSize={"small"}
+                          sx={{ marginRight: "0.3rem" }}
+                        />
+                        {errors}
+                      </span>
+                    </motion.span>
+                  </AnimatePresence>
+                ) : (
+                  <span style={{ display: "block", height: "2.5rem" }}></span>
+                )
+              }
               inputProps={{ ...params.inputProps, readOnly: true }}
               error={errors && touched ? true : false}
+              color="secondary"
+              sx={{
+                width: "80%",
+                fontFamily: "GothamBook",
+                input: { color: "#ccc" },
+              }}
             />
           )}
         />
