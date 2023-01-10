@@ -25,6 +25,12 @@
   padding: 1rem;
 }
 
-.results-section > .title-container > h2 {
-  text-align: left;
+@media screen and (min-width: 340px) and (max-width: 768px) {
+  .results-section > .title-container {
+    font-size: 1rem;
+  }
+
+  .results-section > .title-container > h2 {
+    margin: 0 0 2rem 0;
+  }
 }

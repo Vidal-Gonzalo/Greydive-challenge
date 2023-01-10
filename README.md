@@ -1,70 +1,47 @@
-# Getting Started with Create React App
+# Greydive-challenge
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+This project is a web application developed in React for the Greydive challenge, using react-router-dom for navigation in the application, formik for form validations, prop-types for type validation, firestore for data storage, and firebase for hosting.
 
-## Available Scripts
+## Requirements
 
-In the project directory, you can run:
+To run this project, you will need to have the following installed:
 
-### `npm start`
+- Node.js
+- npm (comes with Node)
+- a firebase account
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+## Installation
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+1. Clone this repository to your computer
 
-### `npm test`
+   git clone https://github.com/{tuusername}/greydive-challenge.git
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+2. Enter the project directory
 
-### `npm run build`
+   cd greydive-challenge
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+3. Install the dependencies:
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+   npm install
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+4. Create a `.env` file in the root directory of the project with the environment variables necessary to connect to your
+   firebase database and hosting. There's an .env example to check required variables.
 
-### `npm run eject`
+5. Start the project:
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+   npm start
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+6. Access http://localhost:3000 to see the application in action.
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+## Built with
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+- [React](https://reactjs.org/) - A JavaScript library for building user interfaces
+- [Firebase](https://firebase.google.com/) - A Google's platform for real-time app development
+- [React-router-dom](https://reacttraining.com/react-router/web/guides/quick-start) - For Navigation in the application
+- [Formik](https://formik.org/) - For form validations
+- [Prop-Types](https://www.npmjs.com/package/prop-types) - For type validation
+- [Firestore](https://firebase.google.com/docs/firestore) - For data storage
 
-## Learn More
+## Author
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+- Gonzalo Vidal - (https://github.com/Vidal-Gonzalo / https://www.linkedin.com/in/vidal-gonzalo/)

@@ -169,3 +169,10 @@
 .pagination-btns a:hover {
   color: white;
 }
+
+@media screen and (min-width: 340px) and (max-width: 768px) {
+  .error-message-container {
+    height: 1rem;
+    font-size: 10px;
+  }
+}

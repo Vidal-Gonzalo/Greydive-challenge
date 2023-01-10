@@ -1,0 +1,5 @@
+@media screen and (min-width: 340px) and (max-width: 768px) {
+  .navbar-icon > img {
+    width: 4rem;
+  }
+}

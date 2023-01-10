@@ -4,6 +4,7 @@ import Box from "@mui/material/Box";
 import Toolbar from "@mui/material/Toolbar";
 import greydive from "../../assets/images/greydive.png";
 import { Link } from "react-router-dom";
+import "./Navbar.css";
 
 export default function Navbar() {
   return (
@@ -18,7 +19,7 @@ export default function Navbar() {
         }}
       >
         <Toolbar>
-          <Link to="/">
+          <Link className="navbar-icon" to="/">
             <img src={greydive} alt="Logo" />
           </Link>
         </Toolbar>

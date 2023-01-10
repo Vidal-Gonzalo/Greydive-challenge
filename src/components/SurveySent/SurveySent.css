@@ -50,3 +50,11 @@
   cursor: pointer;
   transition: all 500ms;
 }
+
+@media screen and (min-width: 340px) and (max-width: 768px) {
+  .survey-sent-container > .survey-sent {
+    width: 50%;
+    height: 20%;
+    padding: 1rem;
+  }
+}
