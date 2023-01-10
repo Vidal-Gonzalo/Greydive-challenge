@@ -1,6 +1,8 @@
 import { FormControl, MenuItem, Select } from "@mui/material";
 import React from "react";
+import { motion, AnimatePresence } from "framer-motion";
 import PriorityHighIcon from "@mui/icons-material/PriorityHigh";
+import { PropTypes } from "prop-types";
 
 export default function SelectInputs({
   item,
@@ -37,15 +39,23 @@ export default function SelectInputs({
           ))}
         </Select>
         {errors && touched ? (
-          <span className="error-message-container">
-            <span className="error-message">
-              <PriorityHighIcon
-                fontSize={"small"}
-                sx={{ marginRight: "0.3rem" }}
-              />
-              {errors}
-            </span>
-          </span>
+          <AnimatePresence>
+            <motion.span
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ duration: 1 }}
+              exit={{ opacity: 0, transition: { duration: 1 } }}
+              className="error-message-container"
+            >
+              <span className="error-message">
+                <PriorityHighIcon
+                  fontSize={"small"}
+                  sx={{ marginRight: "0.3rem" }}
+                />
+                {errors}
+              </span>
+            </motion.span>
+          </AnimatePresence>
         ) : (
           <span style={{ display: "block", height: "2.5rem" }}></span>
         )}
@@ -53,3 +63,16 @@ export default function SelectInputs({
     </div>
   );
 }
+
+SelectInputs.propTypes = {
+  item: PropTypes.shape({
+    type: PropTypes.string.isRequired,
+    label: PropTypes.string.isRequired,
+    name: PropTypes.string.isRequired,
+    required: PropTypes.bool.isRequired,
+  }),
+  handleChange: PropTypes.func.isRequired,
+  handleBlur: PropTypes.func.isRequired,
+  formik: PropTypes.object.isRequired,
+  value: PropTypes.string.isRequired,
+};

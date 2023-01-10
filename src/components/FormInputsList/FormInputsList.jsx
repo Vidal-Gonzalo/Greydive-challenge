@@ -1,20 +1,53 @@
-import React from "react";
+import React, { useEffect } from "react";
 import TextInput from "../FormInputs/TextInput";
 import SelectInputs from "../FormInputs/SelectInput";
 import CheckboxInput from "../FormInputs/CheckboxInput";
 import DateInput from "../FormInputs/DateInput";
+import { formikUtils } from "../../utils/formikUtils";
+import { useFormik } from "formik";
+import * as Yup from "yup";
 import ReactPaginate from "react-paginate";
 import KeyboardArrowLeftIcon from "@mui/icons-material/KeyboardArrowLeft";
 import KeyboardArrowRightIcon from "@mui/icons-material/KeyboardArrowRight";
+import Swal from "sweetalert2";
 import SubmitButton from "../Buttons/SubmitButton";
+import PropTypes from "prop-types";
 import "./FormInputsList.css";
 
 export default function FormInputsList({
   data,
-  formik,
   currentPage,
   changeCurrentPage,
+  onSubmit,
 }) {
+  let dataWithoutSubmitButton = data.filter((item) => item.type !== "submit");
+
+  const initialValues = formikUtils.getInitialValues(dataWithoutSubmitButton);
+
+  const SchemaObject = formikUtils.generateDynamicSchema(
+    dataWithoutSubmitButton
+  );
+
+  const validationSchema = Yup.object().shape(SchemaObject);
+
+  const formik = useFormik({ initialValues, validationSchema, onSubmit });
+
+  const { handleSubmit } = formik;
+
+  useEffect(() => {
+    if (formik.isSubmitting && formik.errors && !formik.isValid) {
+      Swal.fire({
+        html: "Hay campos sin validar",
+        icon: "warning",
+        toast: true,
+        position: "bottom-right",
+        background: "#d32f2f",
+        color: "#ccc",
+        showConfirmButton: false,
+      });
+    }
+  }, [formik.isSubmitting, formik.errors, formik.isValid]);
+
   //Dictionary to map the input types to their corresponding components
   const inputComponents = {
     text: TextInput,
@@ -56,32 +89,55 @@ export default function FormInputsList({
   };
 
   return (
-    <div className="form-input-list">
-      {data.length > 0 && renderInputs(data, currentPage)}
-      {currentPage > 0 && (
-        <div className="pagination-container">
-          <ReactPaginate
-            previousLabel={
-              <div>
-                <KeyboardArrowLeftIcon fontSize="large" />
-              </div>
-            }
-            nextLabel={
-              <div>
-                <KeyboardArrowRightIcon fontSize="large" />
-              </div>
-            }
-            containerClassName={"pagination-btns"}
-            previousLinkClassName={"prev-btn"}
-            nextLinkClassName={"next-btn"}
-            disabledClassName={"pagination-disabled"}
-            activeClassName={"pagination-active"}
-            pageClassName={"pagination-page"}
-            pageCount={numPages}
-            onPageChange={(page) => changeCurrentPage(page)}
-          />
-        </div>
-      )}
-    </div>
+    <form className="form-container" onSubmit={handleSubmit}>
+      <div className="form-input-list">
+        {data.length > 0 && renderInputs(data, currentPage)}
+        {currentPage > 0 && (
+          <div className="pagination-container">
+            <ReactPaginate
+              previousLabel={
+                <div>
+                  <KeyboardArrowLeftIcon fontSize="large" />
+                </div>
+              }
+              nextLabel={
+                <div>
+                  <KeyboardArrowRightIcon fontSize="large" />
+                </div>
+              }
+              containerClassName={"pagination-btns"}
+              previousLinkClassName={"prev-btn"}
+              nextLinkClassName={"next-btn"}
+              disabledClassName={"pagination-disabled"}
+              activeClassName={"pagination-active"}
+              pageClassName={"pagination-page"}
+              pageCount={numPages}
+              onPageChange={(page) => changeCurrentPage(page)}
+            />
+          </div>
+        )}
+      </div>
+    </form>
   );
 }
+
+FormInputsList.propTypes = {
+  data: PropTypes.arrayOf(
+    PropTypes.shape({
+      label: PropTypes.string.isRequired,
+      name: PropTypes.string,
+      required: PropTypes.bool,
+      type: PropTypes.oneOf([
+        "text",
+        "email",
+        "date",
+        "checkbox",
+        "select",
+        "submit",
+      ]).isRequired,
+    })
+  ),
+  currentPage: PropTypes.number.isRequired,
+  changeCurrentPage: PropTypes.func.isRequired,
+  onSubmit: PropTypes.func.isRequired,
+};

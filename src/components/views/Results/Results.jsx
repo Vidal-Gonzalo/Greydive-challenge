@@ -1,4 +1,3 @@
-import { CircularProgress } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import useFetch from "../../../hooks/useFetch";
@@ -6,6 +5,7 @@ import { swalError } from "../../../utils/swal";
 import { motion } from "framer-motion";
 import ResultCard from "../../ResultCard/ResultCard";
 import "./Results.css";
+import Loader from "../../Loader/Loader";
 
 export default function Results() {
   const { id } = useParams();
@@ -55,7 +55,7 @@ export default function Results() {
           alignItems: "center",
         }}
       >
-        <CircularProgress variants={item} />
+        <Loader variants={item} />
       </motion.div>
     );
   }
@@ -69,17 +69,13 @@ export default function Results() {
   if (results.length > 0) {
     return (
       <section className="results-section">
-        <motion.div
-          className="results-container"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delayChildren: 0.5 }}
-          exit={{ opacity: 0 }}
-        >
-          {results.map((item, index) => (
-            <ResultCard item={item} key={index} />
-          ))}
-        </motion.div>
+        <div className="title-container">
+          <h2 className="results-title">Tus resultados:</h2>
+        </div>
+
+        {results.map((item, index) => (
+          <ResultCard item={item} key={index} />
+        ))}
       </section>
     );
   }

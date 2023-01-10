@@ -5,6 +5,7 @@ import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { DesktopDatePicker, LocalizationProvider } from "@mui/x-date-pickers";
 import PriorityHighIcon from "@mui/icons-material/PriorityHigh";
 import { motion, AnimatePresence } from "framer-motion";
+import { PropTypes } from "prop-types";
 
 export default function DateInput({
   item,
@@ -77,3 +78,16 @@ export default function DateInput({
     </div>
   );
 }
+
+DateInput.propTypes = {
+  item: PropTypes.shape({
+    type: PropTypes.string.isRequired,
+    label: PropTypes.string.isRequired,
+    name: PropTypes.string.isRequired,
+    required: PropTypes.bool.isRequired,
+  }),
+  setFieldValue: PropTypes.func.isRequired,
+  handleBlur: PropTypes.func.isRequired,
+  formik: PropTypes.object.isRequired,
+  value: PropTypes.string.isRequired,
+};

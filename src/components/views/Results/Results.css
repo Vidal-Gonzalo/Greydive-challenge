@@ -15,11 +15,16 @@
   );
 }
 
-.results-section > .results-container {
-  margin-top: 4rem;
+.results-section > .title-container {
+  margin: 4rem 0 0 0;
+  font-size: 1.5rem;
   display: flex;
   justify-content: center;
-  align-items: center;
-  flex-direction: column;
-  width: 100%;
+  border-radius: 16px;
+  color: #ccc;
+  padding: 1rem;
+}
+
+.results-section > .title-container > h2 {
+  text-align: left;
 }

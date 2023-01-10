@@ -1,5 +1,6 @@
 import React from "react";
 import SendIcon from "@mui/icons-material/Send";
+import { PropTypes } from "prop-types";
 
 export default function SubmitButton({ item }) {
   const { type, label } = item;
@@ -12,3 +13,10 @@ export default function SubmitButton({ item }) {
     </div>
   );
 }
+
+SubmitButton.propTypes = {
+  item: PropTypes.shape({
+    type: PropTypes.string.isRequired,
+    label: PropTypes.string.isRequired,
+  }),
+};

@@ -1,15 +1,12 @@
 import React, { useState } from "react";
-import { useFormik } from "formik";
-import * as Yup from "yup";
 import { useNavigate } from "react-router-dom";
 import inputsData from "../../../assets/data/inputsData.json";
 import FormInputsList from "../../FormInputsList/FormInputsList";
-import { formikUtils } from "../../../utils/formikUtils";
 import { addDoc, collection } from "firebase/firestore";
 import { db } from "../../../firebase/firebase";
 import SurveySent from "../../SurveySent/SurveySent";
-import { CircularProgress } from "@mui/material";
-import { motion, useAnimation } from "framer-motion";
+import Loader from "../../Loader/Loader";
+import { AnimatePresence, motion, useAnimation } from "framer-motion";
 import { swalError } from "../../../utils/swal";
 import "./Survey.css";
 
@@ -21,9 +18,8 @@ export default function Survey() {
   const [currentPage, setCurrentPage] = useState(1);
   const navigate = useNavigate();
   const { items } = inputsData;
-  let dataWithoutSubmitButton = items.filter((item) => item.type !== "submit");
 
-  const onSubmit = async () => {
+  const onSubmit = async (values) => {
     try {
       setLoading(true);
       let response = await addDoc(collection(db, "surveyResults"), values);
@@ -36,18 +32,6 @@ export default function Survey() {
       setSuccess(false);
     }
   };
-
-  const initialValues = formikUtils.getInitialValues(dataWithoutSubmitButton);
-
-  const SchemaObject = formikUtils.generateDynamicSchema(
-    dataWithoutSubmitButton
-  );
-
-  const validationSchema = Yup.object().shape(SchemaObject);
-
-  const formik = useFormik({ initialValues, validationSchema, onSubmit });
-
-  const { handleSubmit, values } = formik;
 
   const controls = useAnimation();
 
@@ -95,14 +79,12 @@ export default function Survey() {
           </div>
         </div>
         <motion.div className="motion-form" animate={controls}>
-          <form className="form-container" onSubmit={handleSubmit}>
-            <FormInputsList
-              data={items}
-              formik={formik}
-              currentPage={currentPage}
-              changeCurrentPage={changeCurrentPage}
-            />
-          </form>
+          <FormInputsList
+            data={items}
+            onSubmit={onSubmit}
+            currentPage={currentPage}
+            changeCurrentPage={changeCurrentPage}
+          />
         </motion.div>
       </main>
     );
@@ -110,21 +92,22 @@ export default function Survey() {
 
   if (!data && loading) {
     return (
-      <div
-        style={{
-          height: "100vh",
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-        }}
-      >
-        <CircularProgress />
-      </div>
+      <AnimatePresence>
+        <motion.div
+          className="loader-background"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 1 }}
+          exit={{ opacity: 0, transition: { duration: 1 } }}
+        >
+          <Loader />
+        </motion.div>
+      </AnimatePresence>
     );
   }
 
   if (success) {
-    return <SurveySent data={data} />;
+    return <SurveySent id={data.id} />;
   }
 
   if (error) {
